@@ -4,48 +4,55 @@
 //
 //  Created by Swapnil Bhalerao on 16/09/21.
 //  clang++ -std=c++14 -stdlib=libc++ main.cpp
-//  Is Unique: String has all unique charecter.
+//  Check Permutation: Given two strings, write a method to decide if one is a permutation of the other.
+//  example: dog & god
 
 #include <iostream>
 #include <string>
 using namespace std;
 
-bool IsUnique(string str)
+bool checkPermutation(string str1, string str2)
 {
-    bool flags[256];
-    memset(flags, false, sizeof(bool) * 256);
-    if (str.length() > 256)
+    int flags[256];
+    memset(flags, 0, sizeof(int) * 256);
+    if (str1.length() != str2.length())
     {
         return false;
     }
 
-    for (int i = 0; i < str.length(); i++)
+    for (int i = 0; i < str1.length(); i++)
     {
-        if (flags[str[i]] == true)
+        flags[str1[i]]++;
+    }
+
+    for (int i = 0; i < str2.length(); i++)
+    {
+        flags[str2[i]]--;
+        if (flags[str2[i]] < 0)
         {
             return false;
         }
-        else
-        {
-            flags[str[i]] = true;
-        }
     }
+
     return true;
 }
 
 int main(int argc, const char *argv[])
 {
     // insert code here...
-    std::cout << "Enter string\n";
-    string s = "";
-    cin >> s;
-    if (IsUnique(s))
+    std::cout << "Enter first string\n";
+    string s1 = "";
+    cin >> s1;
+    std::cout << "Enter second string\n";
+    string s2 = "";
+    cin >> s2;
+    if (checkPermutation(s1, s2))
     {
-        cout << "String is having all unique charecter" << endl;
+        cout << "Permutation - Yes" << endl;
     }
     else
     {
-        cout << "String is having duplicate charecter" << endl;
+        cout << "Permutation - No" << endl;
     }
 
     return 0;
