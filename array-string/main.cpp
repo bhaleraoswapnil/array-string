@@ -4,56 +4,69 @@
 //
 //  Created by Swapnil Bhalerao on 16/09/21.
 //  clang++ -std=c++14 -stdlib=libc++ main.cpp
-//  Check Permutation: Given two strings, write a method to decide if one is a permutation of the other.
-//  example: dog & god
+
+//  String Compression: Implement a method to perform basic string compression using the counts of repeated characters.
+
+//  For example,
+//  the string aabcccccaaa would become a2blc5a3.
+
+//  If the "compressed"string would not become smaller than the original string,
+//  your method should return the original string. You can assume the string has only uppercase and lowercase letters (a - z).
 
 #include <iostream>
 #include <string>
+#include <stack>
+#include <stdlib.h>
 using namespace std;
 
-bool checkPermutation(string str1, string str2)
+void stringCompress(string str)
 {
-    int flags[256];
-    memset(flags, 0, sizeof(int) * 256);
-    if (str1.length() != str2.length())
+    string output = "";
+    std::stack<char> stk;
+    int cnt = 1;
+    if (stk.empty())
     {
-        return false;
+        stk.push(str[0]);
+        output = output + str[0];
     }
-
-    for (int i = 0; i < str1.length(); i++)
+    for (int i = 1; i < str.length(); i++)
     {
-        flags[str1[i]]++;
-    }
+        // aabcccccaaa would become a2blc5a3
 
-    for (int i = 0; i < str2.length(); i++)
-    {
-        flags[str2[i]]--;
-        if (flags[str2[i]] < 0)
+        if (stk.top() == str[i])
         {
-            return false;
+            cnt++;
+        }
+        else if (stk.top() != str[i])
+        {
+            output = output + std::to_string(cnt);
+            stk.pop();
+            if (stk.empty())
+            {
+                stk.push(str[i]);
+                output = output + str[i];
+                cnt = 1;
+            }
         }
     }
-
-    return true;
+    output = output + std::to_string(cnt);
+    cout << "input == " << str << endl;
+    if (output.length() < str.length())
+    {
+        cout << "output == " << output << endl;
+    }
+    else
+    {
+        cout << "output == " << str << endl;
+    }
 }
 
 int main(int argc, const char *argv[])
 {
     // insert code here...
-    std::cout << "Enter first string\n";
+    std::cout << "Enter string\n";
     string s1 = "";
     cin >> s1;
-    std::cout << "Enter second string\n";
-    string s2 = "";
-    cin >> s2;
-    if (checkPermutation(s1, s2))
-    {
-        cout << "Permutation - Yes" << endl;
-    }
-    else
-    {
-        cout << "Permutation - No" << endl;
-    }
-
+    stringCompress(s1);
     return 0;
 }
